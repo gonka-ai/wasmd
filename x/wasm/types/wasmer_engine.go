@@ -10,6 +10,8 @@ import (
 // DefaultMaxQueryStackSize maximum size of the stack of recursive queries a contract can make
 const DefaultMaxQueryStackSize uint32 = 10
 
+// DefaultMaxCallDepth stays 500 in this fork. Upstream v0.54.3 lowered it to
+// 100, which rejects nested calls this chain still accepts.
 const DefaultMaxCallDepth uint32 = 500
 
 // WasmEngine defines the WASM contract runtime engine.

@@ -1296,6 +1296,14 @@ func (k *Keeper) handleContractResponse(
 		}
 		ctx.EventManager().EmitEvents(customEvents)
 	}
+	// Count this response before submessages and replies. The previous
+	// messenger wrapper incremented depth only inside DispatchMsg, and a
+	// ReplyAlways failure calls reply on the parent context, so that
+	// increment was discarded. Keep the limit at 500.
+	ctx, err := checkAndIncreaseCallDepth(ctx, k.maxCallDepth)
+	if err != nil {
+		return nil, err
+	}
 	return k.wasmVMResponseHandler.Handle(ctx, contractAddr, ibcPort, msgs, data)
 }
 
